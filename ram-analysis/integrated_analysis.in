@@ -1,0 +1,48 @@
+< Input parameters(36) > 
+<Configuration(29)>
+fus_apex_FS = 0.5 [m]
+fus_apex_WL = 2.0 [m]
+fus_diameter = 1.5 [m]
+fus_length = 12.0 [m]
+fus_nose_to_length_ratio = 0.3
+fus_tail_to_length_ratio = 0.3
+wing_area = 26.0 [sq.m]
+wing_aspect_ratio = 9.7
+wing_taper_ratio = 0.8
+wing_leading_edge_sweep = 10 [deg]
+wing_apex_FS = 4.0 [m]
+wing_apex_WL = 2.75 [m]
+wing_incidence_angle = 1.0 [deg]
+wing_airfoil_filename = naca2315.txt
+hstab_area = 6.3 [sq.m]
+hstab_aspect_ratio = 6.53
+hstab_taper_ratio = 0.6
+hstab_leading_edge_sweep = 10 [deg]
+hstab_apex_FS = 10.5 [m]
+hstab_apex_WL = 2.0 [m]
+hstab_incidence_angle = -1 [deg]
+hstab_airfoil_filename = naca0012.txt
+elevator_to_chord_ratio = 0.4
+vstab_area = 2.8 [sq.m]
+vstab_aspect_ratio = 3.0
+vstab_taper_ratio = 0.6
+vstab_leading_edge_sweep = 30.0 [deg]
+vstab_apex_FS = 10.0 [m]
+vstab_apex_WL = 2.0 [m]
+vstab_airfoil_filename = naca0012.txt
+
+<Weight(2)>
+mass = 3600 [kg]
+cg_percent_of_mac = 0.4
+
+<Aerodynamics(5)>
+velocity = 100 [m/s]
+altitude = 3000 [m]
+aoa_min = -10 [deg]
+aoa_max = 10 [deg]
+aoa_step = 1.0 [deg]
+
+<Trim(3)>
+velocity_min = 40 [m/s]
+velocity_max = 100 [m/s]
+velocity_step = 5 [m/s]
