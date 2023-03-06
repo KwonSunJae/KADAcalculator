@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 
 def get_airfoil_thickness(filename):
-    fid = open('./ram-analysis/'+filename, 'rt')
+    fid = open(filename, 'rt')
     lines = fid.readlines()
     fid.close()
     npts = len(lines)

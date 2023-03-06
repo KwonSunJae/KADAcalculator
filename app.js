@@ -11,7 +11,8 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({limit: '5000mb', extended: true, parameterLimit: 100000000000}));
 
 
-server.use(express.static(__dirname + "/public"));
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+server.use('/public',express.static(__dirname + "/public"));
 
 server.get("/", (req, res) => {
  
@@ -19,9 +20,10 @@ server.get("/", (req, res) => {
 });
 
 server.get("/about", (req, res) => {
+  
   res.sendFile(__dirname + "/about.html");
 });
-server.post("/calculate",(req,res)=>{
+server.post("/calculate",async (req,res)=> {
     
     const filename = Date.now();
     let content ='';
@@ -38,17 +40,22 @@ server.post("/calculate",(req,res)=>{
         }
     });
     const ouputfile = path.join(__dirname,path.join('public',filename.toString()));
-    const result = spawn('python', [path.join(__dirname,path.join('ram-analysis','integrated_analysis.py')),inputfile,ouputfile])
+
+    const result = spawn('python', [path.join(__dirname,'integrated_analysis.py'),inputfile,ouputfile]);
     result.stderr.on('data', function(data) {
         console.log(data.toString());
+	res.sendStatus(401);
     });
-    res.send('<img src ="'+ouputfile+'trim.png">');
+    await delay(7000);
+    return res.redirect('http://203.252.161.197/public/'+filename.toString()+'trim.png');
+    
+    
 });
 server.use((req, res) => {
   res.sendFile(__dirname + "/404.html");
 });
 
-server.listen(3000, (err) => {
+server.listen(80, (err) => {
   if (err) return console.log(err);
   console.log("The server is listening on port 3000");
 });
