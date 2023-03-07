@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const spawn = require('child_process').spawn;
 
+
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({limit: '5000mb', extended: true, parameterLimit: 100000000000}));
 
@@ -270,16 +271,40 @@ server.get("/about", (req, res) => {
   
   res.sendFile(__dirname + "/about.html");
 });
-server.post("/calculate",async (req,res)=> {
+function getFile(file) {
+    let oriFile = file.originalname;
+    let ext = path.extname(oriFile);
+    let name = path.basename(oriFile, ext);
+    let rnd = Math.floor(Math.random() * 90) + 10; // 10 ~ 99
+    return Date.now() + '-' + rnd + '-' + name + ext;
+}
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'input');
+    },
+    filename: function (req, file, cb) {
+        cb(null, getFile(file));
+    }
+});
+
+let upload = multer({
+    storage: storage
+});
+var cpUpload = upload.fields([{ name: 'wing_airfoil_filename', maxCount: 1 }, { name: 'vstab_airfoil_filename', maxCount: 1 }, { name: 'hstab_airfoil_filename', maxCount: 1 }])
+server.post("/calculate",cpUpload,async (req,res,next)=> {
     
     const filename = Date.now();
     let content ='';
     const json = req.body;
+
+    console.log(req.file);
     Object.keys(json).forEach(key => {
+        
         content+= key +" = "+ json[key]+"\n";
         
         return key;
     });
+    console.log(req);
     const inputfile = path.join(__dirname,path.join('input',filename+'.in'));
     fs.writeFile(inputfile,content,error =>
         {if (error){
